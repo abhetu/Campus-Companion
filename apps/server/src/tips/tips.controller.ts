@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Param,
-  Body,
-  Query,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Param, Body, Query, UseGuards, Request } from '@nestjs/common';
 import { TipsService } from './tips.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateTipDto, UpdateTipDto, GetTipsQuery, Tip } from '@campus-companion/api-types';
@@ -43,4 +33,3 @@ export class TipsController {
     return this.tipsService.update(id, req.user.userId, updateDto);
   }
 }
-

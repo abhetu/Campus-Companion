@@ -1,20 +1,7 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Param,
-  Body,
-  Query,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Query, UseGuards, Request } from '@nestjs/common';
 import { CommunitiesService } from './communities.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import {
-  CreateCommunityDto,
-  GetCommunitiesQuery,
-  Community,
-} from '@campus-companion/api-types';
+import { CreateCommunityDto, GetCommunitiesQuery, Community } from '@campus-companion/api-types';
 
 @Controller('communities')
 export class CommunitiesController {
@@ -32,10 +19,7 @@ export class CommunitiesController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(
-    @Request() req,
-    @Body() createDto: CreateCommunityDto
-  ): Promise<Community> {
+  async create(@Request() req, @Body() createDto: CreateCommunityDto): Promise<Community> {
     return this.communitiesService.create(req.user.userId, createDto);
   }
 
@@ -51,4 +35,3 @@ export class CommunitiesController {
     return this.communitiesService.leave(id, req.user.userId);
   }
 }
-

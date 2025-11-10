@@ -25,4 +25,3 @@ async function bootstrap() {
   console.log(`Server is running on http://localhost:${port}`);
 }
 bootstrap();
-

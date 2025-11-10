@@ -52,9 +52,7 @@ describe('BuddyService', () => {
         id: 'mentee-1',
         campus,
         interests: [{ interestKey: 'coding' }, { interestKey: 'soccer' }],
-        availability: [
-          { dayOfWeek: 1, startMinutes: 600, endMinutes: 1200 },
-        ],
+        availability: [{ dayOfWeek: 1, startMinutes: 600, endMinutes: 1200 }],
         countryOrRegion: 'India',
         menteeMatches: [],
       };
@@ -63,9 +61,7 @@ describe('BuddyService', () => {
         id: 'buddy-1',
         campus,
         interests: [{ interestKey: 'coding' }, { interestKey: 'photography' }],
-        availability: [
-          { dayOfWeek: 1, startMinutes: 600, endMinutes: 1200 },
-        ],
+        availability: [{ dayOfWeek: 1, startMinutes: 600, endMinutes: 1200 }],
         countryOrRegion: 'USA',
         buddyMatches: [],
       };
@@ -96,4 +92,3 @@ describe('BuddyService', () => {
     });
   });
 });
-

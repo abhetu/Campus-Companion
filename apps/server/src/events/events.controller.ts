@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Param,
-  Body,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, UseGuards, Request } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateEventDto, RsvpEventDto, Event } from '@campus-companion/api-types';
@@ -42,12 +34,7 @@ export class EventsDetailController {
 
   @Post(':id/rsvp')
   @UseGuards(JwtAuthGuard)
-  async rsvp(
-    @Param('id') id: string,
-    @Request() req,
-    @Body() rsvpDto: RsvpEventDto
-  ) {
+  async rsvp(@Param('id') id: string, @Request() req, @Body() rsvpDto: RsvpEventDto) {
     return this.eventsService.rsvp(id, req.user.userId, rsvpDto);
   }
 }
-

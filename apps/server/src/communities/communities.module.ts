@@ -7,4 +7,3 @@ import { CommunitiesController } from './communities.controller';
   controllers: [CommunitiesController],
 })
 export class CommunitiesModule {}
-

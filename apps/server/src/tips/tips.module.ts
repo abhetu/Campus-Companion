@@ -7,4 +7,3 @@ import { TipsController } from './tips.controller';
   controllers: [TipsController],
 })
 export class TipsModule {}
-

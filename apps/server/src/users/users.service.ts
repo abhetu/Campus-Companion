@@ -121,4 +121,3 @@ export class UsersService {
     return this.findOneWithInterests(id);
   }
 }
-

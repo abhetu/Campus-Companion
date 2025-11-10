@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Param,
-  Body,
-  Query,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Query, UseGuards, Request } from '@nestjs/common';
 import { BuddyService } from './buddy.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
@@ -65,4 +56,3 @@ export class BuddyController {
     return this.buddyService.matchMenteesAndBuddies(campus);
   }
 }
-

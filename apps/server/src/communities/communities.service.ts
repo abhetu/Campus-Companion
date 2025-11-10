@@ -125,4 +125,3 @@ export class CommunitiesService {
     return { message: 'Left community' };
   }
 }
-

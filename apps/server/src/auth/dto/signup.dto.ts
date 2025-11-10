@@ -25,4 +25,3 @@ export class SignupDto {
   @IsString()
   degreeLevel?: string;
 }
-

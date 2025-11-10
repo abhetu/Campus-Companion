@@ -7,4 +7,3 @@ import { BuddyController } from './buddy.controller';
   controllers: [BuddyController],
 })
 export class BuddyModule {}
-

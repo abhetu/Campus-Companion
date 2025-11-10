@@ -112,4 +112,3 @@ export class EventsService {
     return { message: 'RSVP updated' };
   }
 }
-
