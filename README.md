@@ -179,7 +179,3 @@ pnpm test
 2. Make your changes
 3. Run linting and tests
 4. Submit a pull request
-
-## License
-
-MIT
