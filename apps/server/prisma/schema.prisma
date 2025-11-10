@@ -1,0 +1,226 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  INTERNATIONAL
+  BUDDY
+  STAFF
+}
+
+enum CommunityMemberRole {
+  MEMBER
+  MODERATOR
+}
+
+enum EventRsvpStatus {
+  GOING
+  NOT_GOING
+  INTERESTED
+}
+
+enum BuddyOptInType {
+  MENTEE
+  BUDDY
+}
+
+enum BuddyMatchStatus {
+  ACTIVE
+  COMPLETED
+  FAILED
+}
+
+enum BuddyMeetingStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+enum TipCategory {
+  BANKING
+  PHONE_PLANS
+  GROCERIES
+  TRANSPORT
+  OTHER
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String
+  name          String
+  campus        String
+  role          UserRole
+  countryOrRegion String
+  degreeLevel   String?
+  createdAt     DateTime @default(now())
+
+  interests     UserInterest[]
+  availability  UserAvailability[]
+  createdCommunities Community[] @relation("CommunityCreator")
+  communityMemberships CommunityMember[]
+  createdEvents Event[] @relation("EventCreator")
+  eventRsvps    EventRsvp[]
+  buddyOptIns   BuddyOptIn[]
+  menteeMatches BuddyMatch[] @relation("Mentee")
+  buddyMatches  BuddyMatch[] @relation("Buddy")
+  buddyMeetings BuddyMeeting[]
+  createdTips   Tip[] @relation("TipCreator")
+
+  @@index([campus])
+  @@index([email])
+}
+
+model UserInterest {
+  id          String @id @default(uuid())
+  userId      String
+  interestKey String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([interestKey])
+}
+
+model UserAvailability {
+  id           String @id @default(uuid())
+  userId       String
+  dayOfWeek    Int    // 0-6, 0 = Sunday
+  startMinutes Int    // minutes from midnight
+  endMinutes   Int
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Community {
+  id            String   @id @default(uuid())
+  campus        String
+  name          String
+  description   String
+  createdByUserId String
+  createdAt     DateTime @default(now())
+
+  createdBy     User     @relation("CommunityCreator", fields: [createdByUserId], references: [id])
+  members       CommunityMember[]
+  events        Event[]
+
+  @@index([campus])
+}
+
+model CommunityMember {
+  id          String            @id @default(uuid())
+  communityId String
+  userId      String
+  role        CommunityMemberRole @default(MEMBER)
+
+  community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([communityId, userId])
+  @@index([communityId])
+  @@index([userId])
+}
+
+model Event {
+  id            String   @id @default(uuid())
+  communityId   String
+  title         String
+  description   String
+  startTime     DateTime
+  endTime       DateTime
+  locationText  String
+  capacity      Int?
+  createdByUserId String
+  createdAt     DateTime @default(now())
+
+  community     Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  createdBy     User      @relation("EventCreator", fields: [createdByUserId], references: [id])
+  rsvps         EventRsvp[]
+
+  @@index([communityId])
+  @@index([startTime])
+}
+
+model EventRsvp {
+  id        String          @id @default(uuid())
+  eventId   String
+  userId    String
+  status    EventRsvpStatus
+  checkedIn Boolean         @default(false)
+
+  event     Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+}
+
+model BuddyOptIn {
+  id        String         @id @default(uuid())
+  userId    String
+  type      BuddyOptInType
+  active    Boolean        @default(true)
+  createdAt DateTime       @default(now())
+
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type])
+  @@index([userId])
+  @@index([type, active])
+}
+
+model BuddyMatch {
+  id            String          @id @default(uuid())
+  menteeId      String
+  buddyId       String
+  campus        String
+  status        BuddyMatchStatus @default(ACTIVE)
+  createdAt     DateTime        @default(now())
+  lastMeetingAt DateTime?
+
+  mentee        User            @relation("Mentee", fields: [menteeId], references: [id])
+  buddy         User            @relation("Buddy", fields: [buddyId], references: [id])
+  meetings      BuddyMeeting[]
+
+  @@index([menteeId])
+  @@index([buddyId])
+  @@index([campus, status])
+}
+
+model BuddyMeeting {
+  id          String            @id @default(uuid())
+  matchId     String
+  plannedTime DateTime
+  status      BuddyMeetingStatus
+  createdAt   DateTime          @default(now())
+
+  match       BuddyMatch        @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@index([matchId])
+}
+
+model Tip {
+  id            String     @id @default(uuid())
+  campus        String
+  category      TipCategory
+  title         String
+  content       String     @db.Text
+  createdByUserId String
+  approved      Boolean    @default(false)
+  createdAt     DateTime   @default(now())
+
+  createdBy     User       @relation("TipCreator", fields: [createdByUserId], references: [id])
+
+  @@index([campus, category])
+  @@index([approved])
+}
+

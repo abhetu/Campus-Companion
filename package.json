@@ -1,0 +1,27 @@
+{
+  "name": "campus-companion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An app that helps international students find micro communities, join events, and get paired with buddies or mentors",
+  "scripts": {
+    "dev": "pnpm --parallel --filter \"./apps/*\" dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev:server": "pnpm --filter server dev",
+    "lint": "pnpm --recursive lint",
+    "test": "pnpm --recursive test",
+    "build": "pnpm --recursive build",
+    "db:generate": "pnpm --filter server db:generate",
+    "db:migrate": "pnpm --filter server db:migrate",
+    "db:seed": "pnpm --filter server db:seed"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}
+
